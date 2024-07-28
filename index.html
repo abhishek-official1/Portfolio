@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhishek's Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            background-image: url("alexander-grey-62vi3TG5EDg-unsplash.jpg");
+            background-position: center;
+            background-size: cover;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        nav ul li {
+            float: left;
+        }
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav ul li a:hover {
+            background-color: #111;
+        }
+        .container {
+            width: 100%;
+            border-radius: 10px;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            box-sizing: border-box;
+
+        }
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            position: relative;
+            background-attachment:fixed; /* This creates the parallax effect */
+            background-image: url("2112.w026.n002.1274B.p1.1274.jpg");
+            background-position: center;
+            background-size: cover;
+            border-radius: 10px;
+        }
+        .hero h1 {
+            font-size: 8vw;
+            margin: 0;
+            line-height: 1;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .hero-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-left: 20px;
+        }
+        .tagline {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .project-item {
+            background-color: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .project-info{
+            text-align: center;
+            font-size: 100%;
+            padding: auto;
+        }
+        .project-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.393);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .project-item img {
+            width: 100%;
+            height: 200px;
+            object-fit:cover;
+        }
+        .pdf-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(47, 134, 249, 0.742);
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 100%;
+            max-height: 90vh;
+            width: auto; 
+            height: auto;
+        }
+        
+        #pdfModal {
+            overflow: auto;
+        }
+        
+        .pdfCanvasContainer{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .pdfCanvas {
+            display: block;
+            margin: auto;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            width: 100%;
+            height: 100%;
+            padding: auto;
+            box-sizing: border-box;
+
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .contact {
+            margin-top: 40px;
+            background-color: #f6afaf;
+            padding: 20px;
+            border-radius: 5px;
+            border-style: ridge;
+        }
+        .social-links {
+            display: flex;
+            justify-content: start;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .social-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 24px;
+        }
+        footer {
+            text-align: center;
+            border-style: ridge;
+            border-radius: 10px;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+        }
+        footer a{
+            color:#ff6347;
+            text-decoration:none;
+        }
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 10vw;
+            }
+            .hero-image {
+                width: 80px;
+                height: 80px;
+            }
+            .project-item img {
+                height: 150px;
+            }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        input[type=text] {
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #000000;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: white;
+            background-position: 10px 10px; 
+        }
+        input[type=email] {
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #000000;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: white;
+            background-position: 10px 10px; 
+        }
+        textarea[id=message] {
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #000000;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: white;
+            background-position: 10px 10px; 
+        }
+        button[type=submit]{
+            width: 10;
+            box-sizing:border-box;
+            border: 2px solid #000000;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: rgb(237, 127, 127);
+            background-position: 10px 10px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <section id="hero" class="hero">
+            <h1>Abhishek Chavan</h1>
+            <img src="1691498477009.jpeg" alt="Abhishek" class="hero-image">
+        </section>
+
+        <p class="tagline">Communication designer consistently building memorable and influential brands.</p>
+        <div class="project-section" id="posters">
+            <h2>Posters</h2>
+                <div id="projects" class="projects-grid">
+                    <div class="project-item" onclick="showPDF('agritech.pdf')">
+                        <img src="Screenshot 2024-07-25 192331.png" alt="Project 1" loading="lazy">
+                        <div class="pdf-icon">PDF</div>
+                        <div class="project-info">
+                            <h3>Agritech-technology in Agriculute</h3>
+                            <p>In this event I presented a poster themed as Agritech</p>
+                        </div>
+                    </div>
+                    <div class="project-item" onclick="showPDF('agritech2.pdf')">
+                        <img src="Screenshot 2024-07-25 192323.png" alt="Project 2" loading="lazy">
+                        <div class="pdf-icon">PDF</div>
+                        <div class="project-info">
+                            <h3>Blockchain in Agriculture</h3>
+                            <p>In this event I presented a poster on application of blockchain in Agriculture</p>
+                        </div>
+                    </div>
+                    <div class="project-item" onclick="showPDF('Chemistry PBL Poster.pdf')">
+                        <img src="Chemistry PBL Poster-1.png" alt="Project 3" loading="lazy">
+                        <div class="pdf-icon">PDF</div>
+                        <div class="project-info">
+                            <h3>Chemistry PBL poster</h3>
+                            <p>Brief description of the project.</p>
+                        </div>
+                    </div>
+                    <div class="project-item" onclick="showPDF('Black and Gray Halloween Witchcraft A3 Poster.pdf (1).pdf')">
+                        <img src="Black and Gray Halloween Witchcraft A3 Poster.pdf (1)-1.png" alt="Project 3" loading="lazy">
+                        <div class="pdf-icon">PDF</div>
+                        <div class="project-info">
+                            <h3>Yoga poster</h3>
+                            <p>Brief description of the project.</p>
+                        </div>
+                    </div>
+                    <div class="project-item" onclick="showPDF('Pink & Biege Floral Elegant Indian Wedding Dinner Menu.pdf')">
+                        <img src="Pink & Biege Floral Elegant Indian Wedding Dinner Menu-1.png" alt="Project 3" loading="lazy">
+                        <div class="pdf-icon">PDF</div>
+                        <div class="project-info">
+                            <h3>Yoga poster</h3>
+                            <p>Brief description of the project.</p>
+                        </div>
+                    </div>
+                    
+                </div>
+        </div>
+            <div class="project-section" id="posts">
+                <h2>Photos/Posts/Videos</h2>
+                    <div id="projects" class="projects-grid">
+                    <div class="project-item" onclick="showPDF('Photo Collage Polaroid Travel Instagram Story.pdf')">
+                        <img src="Photo Collage Polaroid Travel Instagram Story-1.png" alt="Project 4" loading="lazy">
+                        <div class="pdf-icon">PDF</div>
+                        <div class="project-info">
+                            <h3>A simple collage</h3>
+                            <p>Brief description of the project.</p>
+                        </div>
+                    </div>
+            
+                    <div class="project-item" onclick="showPDF('Untitled design.pdf')">
+                        <img src="Untitled design-1.png" alt="Project 5" loading="lazy">
+                        <div class="pdf-icon">PDF</div>
+                            <div class="project-info">
+                                <h3>A sunset photo</h3>
+                                <p>Brief description of the project.</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-section" id="presentations">
+                    <h2>Presentations</h2>
+                    <div id="projects" class="projects-grid">
+                        <div class="project-item" onclick="showPDF('PS PBL Presentation.pdf')">
+                            <img src="Screenshot 2024-07-25 210147.png" alt="Project 5" loading="lazy">
+                            <div class="pdf-icon">PDF</div>
+                                <div class="project-info">
+                                    <h3>PS PBL Presentation</h3>
+                                    <p>Brief description of the project.</p>
+                                </div>
+                        </div>
+                        
+            </div>
+        <section id="contact" class="contact">
+            <h2>Contact Me</h2>
+            <form action="/send-email" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/abhishek-chavan-611288282/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/abhishek-official1" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://x.com/Abhishek41942" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/aesthetic_alchemist1/" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Abhishek. All Rights Reserved.</p>
+        <p><a href="https://github.com/abhishek-official1">GitHub</a> | <a href="https://www.linkedin.com/in/abhishek-chavan-611288282/">LinkedIn</a></p>
+    </footer>
+
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="enlargedImage">
+    </div>
+
+    <div id="pdfModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="pdfCanvasContainer" class="modal-content"></div>
+    </div>
+
+    <script>
+        function enlargeImage(src) {
+            var modal = document.getElementById("imageModal");
+            var modalImg = document.getElementById("enlargedImage");
+            modal.style.display = "block";
+            modalImg.src = src;
+            modalImg.style.width = 'auto'; 
+            modalImg.style.height = 'auto';
+            document.body.classList.add("modal-open");
+        }
+
+        function showPDF(pdfPath) {
+            var modal = document.getElementById("pdfModal");
+            var canvasContainer = document.getElementById('pdfCanvasContainer');
+            modal.style.display = "block";
+            document.body.classList.add("modal-open");
+
+            pdfjsLib.getDocument(pdfPath).promise.then(function(pdf) {
+                // Clear existing canvases
+                canvasContainer.innerHTML = '';
+
+                // Render all pages
+                for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+                    pdf.getPage(pageNumber).then(function(page) {
+                        var scale = 1.5;
+                        var viewport = page.getViewport({ scale: scale });
+                        var canvas = document.createElement('canvas');
+                        canvas.className = 'pdfCanvas';
+                        var context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+                        canvasContainer.appendChild(canvas);
+
+                        var renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        page.render(renderContext);
+                    });
+                }
+            });
+        }
+
+
+        function closeModal() {
+            document.getElementById("imageModal").style.display = "none";
+            document.getElementById("pdfModal").style.display = "none";
+            document.body.classList.remove("modal-open");
+        }
+
+        document.querySelectorAll('.project-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const imgSrc = this.querySelector('img').src;
+                enlargeImage(imgSrc);
+            });
+        });
+    </script>
+</body>
+</html>
